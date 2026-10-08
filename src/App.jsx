@@ -1,8 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ProtectedRoute from './components/ProtectedRoute';
+
 import Home from './pages/Home';
 import BrowseStartups from './pages/BrowseStartups';
 import BrowseOpportunities from './pages/BrowseOpportunities';
@@ -10,11 +11,14 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import NotFound from './pages/NotFound';
 
-export default function App() {
+import AdminDashboard from './pages/dashboard/AdminDashboard';
+import FounderDashboard from './pages/dashboard/FounderDashboard';
+import CollaboratorDashboard from './pages/dashboard/CollaboratorDashboard';
+
+function App() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col bg-gray-50">
-        <Toaster position="top-right" />
+      <div className="flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-grow">
           <Routes>
@@ -23,7 +27,33 @@ export default function App() {
             <Route path="/opportunities" element={<BrowseOpportunities />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/protected" element={<ProtectedRoute allowedRole="Founder"><div>Protected Content</div></ProtectedRoute>} />
+
+            {/* Protected Role-based Dashboards */}
+            <Route 
+              path="/admin-dashboard" 
+              element={
+                <ProtectedRoute allowedRole="Admin">
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/founder-dashboard" 
+              element={
+                <ProtectedRoute allowedRole="Founder">
+                  <FounderDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/collaborator-dashboard" 
+              element={
+                <ProtectedRoute allowedRole="Collaborator">
+                  <CollaboratorDashboard />
+                </ProtectedRoute>
+              } 
+            />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
@@ -32,3 +62,5 @@ export default function App() {
     </Router>
   );
 }
+
+export default App;
