@@ -9,15 +9,27 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+ const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      
-      await axios.post('http://localhost:5000/api/auth/jwt', { email }, { withCredentials: true });
+      const response = await axios.post('http://localhost:5000/api/auth/jwt', { email, password }, { withCredentials: true });
       toast.success('Logged in successfully');
-      navigate('/dashboard');
+      
+      const userRole = response.data.role || response.data.user?.role || 'Collaborator';
+    
+      localStorage.setItem('userRole', userRole);
+      localStorage.setItem('userInfo', JSON.stringify(response.data.user));
+      
+      if (userRole === 'Admin') {
+        navigate('/admin-dashboard');
+      } else if (userRole === 'Founder') {
+        navigate('/founder-dashboard');
+      } else {
+        navigate('/collaborator-dashboard');
+      }
     } catch (err) {
-      toast.error('Login failed. Please check credentials.');
+      console.error('Login error:', err);
+      toast.error(err.response?.data?.message || 'Login failed. Please check credentials.');
     }
   };
 

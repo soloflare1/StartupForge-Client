@@ -2,9 +2,8 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 export default function ProtectedRoute({ children, allowedRole }) {
-  const isAuthenticated = true; 
-  const userRole = 'Founder'; 
-
+ const userRole = localStorage.getItem('userRole');
+  const isAuthenticated = Boolean(userRole); 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }

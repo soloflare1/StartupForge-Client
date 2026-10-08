@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, User, Image as ImageIcon, UserPlus } from 'lucide-react';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -11,14 +12,30 @@ export default function Register() {
   const [image, setImage] = useState('');
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     if (password.length < 6 || !/[A-Z]/.test(password) || !/[a-z]/.test(password)) {
       toast.error('Password must be 6+ chars and have uppercase & lowercase letters.');
       return;
     }
-    toast.success('Registration successful! Please login.');
-    navigate('/login');
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/register', {
+        name,
+        email,
+        password,
+        role,
+        image
+      });
+
+      if (response.data.success || response.status === 201) {
+        toast.success('Registration successful! Please login.');
+        navigate('/login');
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      toast.error(error.response?.data?.message || 'Registration failed. Please try again.');
+    }
   };
 
   return (
@@ -75,7 +92,7 @@ export default function Register() {
               <Mail className="w-5 h-5 text-gray-400 mr-2" />
               <input 
                 type="email" 
-                value= {email} 
+                value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
                 required 
                 className="w-full outline-none text-sm" 

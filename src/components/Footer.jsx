@@ -1,5 +1,5 @@
 import React from 'react';
-import { Rocket, Mail, Phone, MapPin, Globe, Github, Linkedin, Twitter } from 'lucide-react';
+import { Rocket, Mail, Phone, MapPin, Globe, Share2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Footer() {
@@ -38,14 +38,11 @@ export default function Footer() {
         <div>
           <h3 className="text-white font-semibold mb-4">Social Links</h3>
           <div className="flex gap-4">
-            <a href="https://github.com" target="_blank" rel="noreferrer" className="p-2 bg-gray-800 rounded-lg hover:bg-blue-600 transition text-white">
-              <Github className="w-5 h-5" />
+            <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="px-3 py-2 bg-gray-800 rounded-lg hover:bg-blue-600 transition text-white flex items-center gap-2 text-xs font-medium">
+              <Globe className="w-4 h-4" /> LinkedIn
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="p-2 bg-gray-800 rounded-lg hover:bg-blue-600 transition text-white">
-              <Linkedin className="w-5 h-5" />
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer" className="p-2 bg-gray-800 rounded-lg hover:bg-blue-600 transition text-white">
-              <Twitter className="w-5 h-5" />
+            <a href="https://twitter.com" target="_blank" rel="noreferrer" className="px-3 py-2 bg-gray-800 rounded-lg hover:bg-blue-600 transition text-white flex items-center gap-2 text-xs font-medium">
+              <Share2 className="w-4 h-4" /> Twitter
             </a>
           </div>
         </div>
