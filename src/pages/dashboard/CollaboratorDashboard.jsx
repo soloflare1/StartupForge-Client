@@ -120,55 +120,70 @@ export default function CollaboratorDashboard() {
         )}
 
         {activeTab === 'profile' && (
-          <div className="bg-zinc-900/60 backdrop-blur-xl border border-zinc-800/80 rounded-2xl p-6 shadow-2xl max-w-2xl">
-            <h3 className="text-xl font-semibold mb-6 text-white">Update Personal Profile</h3>
-            <form onSubmit={handleProfileUpdate} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1">Name</label>
-                <input 
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-sm text-white outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1">Image URL</label>
-                <input 
-                  type="text"
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-sm text-white outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1">Skills (Comma separated)</label>
-                <input 
-                  type="text"
-                  value={skills}
-                  onChange={(e) => setSkills(e.target.value)}
-                  placeholder="React, Node.js, UI/UX"
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-sm text-white outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-1">Bio</label>
-                <textarea 
-                  value={bio}
-                  onChange={(e) => setBio(e.target.value)}
-                  rows="3"
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-sm text-white outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Tell founders about yourself..."
-                ></textarea>
-              </div>
-              <button 
-                type="submit"
-                className="bg-blue-600 hover:bg-blue-500 text-white font-medium px-5 py-2.5 rounded-xl transition shadow-lg shadow-blue-600/20 text-sm"
-              >
-                Save Changes
-              </button>
-            </form>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-zinc-900/60 backdrop-blur-xl border border-zinc-800/80 rounded-2xl p-6 shadow-2xl md:col-span-1 text-center flex flex-col items-center">
+              <img 
+                src={image || 'https://via.placeholder.com/150'} 
+                alt="Profile" 
+                className="w-24 h-24 rounded-full object-cover border-2 border-blue-500 mb-4 bg-zinc-800" 
+              />
+              <h3 className="text-xl font-bold text-white">{name}</h3>
+              <p className="text-xs text-zinc-400 mt-1">{JSON.parse(localStorage.getItem('user') || '{}').email}</p>
+              <p className="text-xs text-blue-400 mt-2 font-medium bg-blue-950/80 border border-blue-800 px-3 py-1 rounded-full">Collaborator</p>
+              <p className="text-xs text-zinc-300 mt-4 text-left w-full"><strong className="text-white">Bio:</strong> {bio || 'No bio added yet.'}</p>
+              <p className="text-xs text-zinc-300 mt-2 text-left w-full"><strong className="text-white">Skills:</strong> {skills || 'None specified'}</p>
+            </div>
+
+            <div className="bg-zinc-900/60 backdrop-blur-xl border border-zinc-800/80 rounded-2xl p-6 shadow-2xl md:col-span-2">
+              <h3 className="text-xl font-semibold mb-6 text-white">Update Personal Profile</h3>
+              <form onSubmit={handleProfileUpdate} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-zinc-300 mb-1">Name</label>
+                  <input 
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-sm text-white outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-zinc-300 mb-1">Image URL</label>
+                  <input 
+                    type="text"
+                    value={image}
+                    onChange={(e) => setImage(e.target.value)}
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-sm text-white outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-zinc-300 mb-1">Skills (Comma separated)</label>
+                  <input 
+                    type="text"
+                    value={skills}
+                    onChange={(e) => setSkills(e.target.value)}
+                    placeholder="React, Node.js, UI/UX"
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-sm text-white outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-zinc-300 mb-1">Bio</label>
+                  <textarea 
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                    rows="3"
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-sm text-white outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Tell founders about yourself..."
+                  ></textarea>
+                </div>
+                <button 
+                  type="submit"
+                  className="bg-blue-600 hover:bg-blue-500 text-white font-medium px-5 py-2.5 rounded-xl transition shadow-lg shadow-blue-600/20 text-sm"
+                >
+                  Save Changes
+                </button>
+              </form>
+            </div>
           </div>
         )}
       </div>
