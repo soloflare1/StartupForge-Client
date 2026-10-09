@@ -68,6 +68,18 @@ export default function FounderDashboard() {
     fetchData();
   }, []);
 
+  const handleStatusUpdate = async (appId, newStatus) => {
+    try {
+      await axios.patch(`http://localhost:5000/api/applications/${appId}`, {
+        status: newStatus
+      }, { withCredentials: true });
+      toast.success(`Application status updated to ${newStatus}`);
+      fetchData();
+    } catch (err) {
+      toast.error('Failed to update application status');
+    }
+  };
+
   const handlePostOpportunity = async (e) => {
     e.preventDefault();
     try {
@@ -180,7 +192,7 @@ export default function FounderDashboard() {
                           <img src={s.logo || 'https://via.placeholder.com/150'} alt="" className="w-12 h-12 rounded-lg object-cover bg-zinc-700" />
                           <div>
                             <h4 className="font-bold text-white">{s.startup_name}</h4>
-                            <p className="text-xs text-zinc-400">{s.industry} • {s.funding_stage}</p>
+                            <p className="text-xs text-zinc-400">{s.industry} - {s.funding_stage}</p>
                           </div>
                         </div>
                       ))}
@@ -200,7 +212,7 @@ export default function FounderDashboard() {
                         <div key={opp._id} className="bg-zinc-800/50 border border-zinc-700/60 p-4 rounded-xl flex justify-between items-center">
                           <div>
                             <h4 className="font-bold text-white">{opp.role_title}</h4>
-                            <p className="text-xs text-zinc-400 mt-1">{opp.work_type} • Deadline: {new Date(opp.deadline).toLocaleDateString()}</p>
+                            <p className="text-xs text-zinc-400 mt-1">{opp.work_type} | Deadline: {new Date(opp.deadline).toLocaleDateString()}</p>
                           </div>
                           <span className="text-xs bg-blue-950/80 text-blue-400 border border-blue-800 px-3 py-1 rounded-full">Active</span>
                         </div>
@@ -224,8 +236,22 @@ export default function FounderDashboard() {
                             <p className="text-xs text-zinc-400 mt-1">Motivation: {app.motivation}</p>
                             <a href={app.portfolio_link} target="_blank" rel="noreferrer" className="text-xs text-blue-400 underline mt-1 inline-block">View Portfolio</a>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-3">
                             <span className="text-xs px-3 py-1 bg-amber-950 text-amber-400 border border-amber-800 rounded-full">{app.status}</span>
+                            <div className="flex gap-2">
+                              <button 
+                                onClick={() => handleStatusUpdate(app._id, 'Accepted')}
+                                className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-xs transition font-medium"
+                              >
+                                Accept
+                              </button>
+                              <button 
+                                onClick={() => handleStatusUpdate(app._id, 'Rejected')}
+                                className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-xs transition font-medium"
+                              >
+                                Reject
+                              </button>
+                            </div>
                           </div>
                         </div>
                       ))}
