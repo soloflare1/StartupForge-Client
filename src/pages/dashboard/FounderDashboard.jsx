@@ -70,7 +70,7 @@ export default function FounderDashboard() {
 
   const handleStatusUpdate = async (appId, newStatus) => {
     try {
-      await axios.patch(`http://localhost:5000/api/applications/${appId}`, {
+      await axios.patch(`http://localhost:5000/api/applications/${appId}/status`, {
         status: newStatus
       }, { withCredentials: true });
       toast.success(`Application status updated to ${newStatus}`);
