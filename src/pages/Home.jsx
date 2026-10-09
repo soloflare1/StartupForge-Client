@@ -2,15 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Rocket, ArrowRight, Briefcase, Users, CheckCircle2, Award, TrendingUp, Sparkles, ShieldCheck, Zap } from 'lucide-react';
-import axios from 'axios';
+import API from '../api';
 
 const bannerImages = [
   "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80", 
   "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1920&q=80", 
   "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1920&q=80"  
 ];
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const fallbackStartups = [
   {
@@ -48,7 +46,7 @@ export default function Home() {
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
 
   useEffect(() => {
-    axios.get(`${API_URL}/api/startups`)
+    API.get('/api/startups')
       .then(res => {
         const data = Array.isArray(res.data) ? res.data : (res.data.startups || []);
         setStartups(data.length > 0 ? data.slice(0, 3) : fallbackStartups);
@@ -58,7 +56,7 @@ export default function Home() {
         setStartups(fallbackStartups);
       });
 
-    axios.get(`${API_URL}/api/opportunities?limit=3`)
+    API.get('/api/opportunities?limit=3')
       .then(res => {
         const data = Array.isArray(res.data) ? res.data : (res.data.opportunities || []);
         setOpportunities(data.slice(0, 3));
@@ -75,7 +73,6 @@ export default function Home() {
 
   return (
     <div className="space-y-24 pb-24 bg-neutral-950 text-neutral-100 min-h-screen selection:bg-blue-600 selection:text-white">
-      
       
       <motion.section 
         initial={{ opacity: 0, y: -20 }}
@@ -123,7 +120,6 @@ export default function Home() {
         </div>
       </motion.section>
 
-  
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-end mb-10">
           <div>
@@ -141,7 +137,6 @@ export default function Home() {
               key={startup._id || startup.startup_name} 
               className="group relative bg-neutral-900/60 border border-neutral-800/90 hover:border-blue-500/50 backdrop-blur-2xl rounded-3xl overflow-hidden shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-blue-900/15 flex flex-col justify-between"
             >
-           
               <div className="relative h-48 overflow-hidden bg-neutral-950">
                 <img 
                   src={startup.logo} 
@@ -154,7 +149,6 @@ export default function Home() {
                 </span>
               </div>
 
-              {/* Card Body */}
               <div className="p-7 pt-3 flex flex-col flex-grow justify-between">
                 <div>
                   <h3 className="text-xl font-bold text-white tracking-wide group-hover:text-blue-400 transition-colors mb-2">
@@ -238,7 +232,6 @@ export default function Home() {
         </div>
       </section>
 
-   
       <section className="bg-neutral-900/40 border-y border-neutral-800/80 backdrop-blur-2xl py-16 my-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div className="space-y-1">
@@ -260,7 +253,6 @@ export default function Home() {
         </div>
       </section>
 
-   
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-3xl font-extrabold text-white mb-3 tracking-tight">Why Choose StartupForge</h2>
