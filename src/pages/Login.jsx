@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, LogIn, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+import API from '../api';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -13,7 +13,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/jwt', { email, password }, { withCredentials: true });
+      const response = await API.post('/api/auth/jwt', { email, password });
       toast.success('Logged in successfully');
       
       const userRole = response.data.role || response.data.user?.role || 'Collaborator';
