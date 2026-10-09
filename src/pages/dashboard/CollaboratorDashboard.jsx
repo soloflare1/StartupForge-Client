@@ -40,7 +40,7 @@ export default function CollaboratorDashboard() {
       const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
       const skillsArray = skills.split(',').map(s => s.trim()).filter(Boolean);
 
-      const res = await axios.put(`http://localhost:5000/api/users/${userInfo.email}`, {
+      const res = await axios.put(`http://localhost:5000/api/auth/users/${userInfo.email}`, {
         name,
         image,
         skills: skillsArray,
