@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import API from '../api';
+import API from '../../api';
 import { Building, Globe, ExternalLink, Rocket } from 'lucide-react';
 import toast from 'react-hot-toast';
 
