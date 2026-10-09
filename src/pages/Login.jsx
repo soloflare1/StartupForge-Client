@@ -9,16 +9,25 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
- const handleLogin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/auth/jwt', { email, password }, { withCredentials: true });
       toast.success('Logged in successfully');
       
       const userRole = response.data.role || response.data.user?.role || 'Collaborator';
-    
+      
+      const userData = {
+        name: response.data.user?.name || 'User',
+        email: response.data.user?.email || email,
+        role: userRole
+      };
+      
+      localStorage.setItem('user', JSON.stringify(userData));
       localStorage.setItem('userRole', userRole);
       localStorage.setItem('userInfo', JSON.stringify(response.data.user));
+      window.dispatchEvent(new Event('storage'));
+      window.dispatchEvent(new Event('authChange'));
       
       if (userRole === 'Admin') {
         navigate('/admin-dashboard');
