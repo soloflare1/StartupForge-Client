@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../api';
 import toast from 'react-hot-toast';
 import { Plus, Briefcase, Users, FileText, CreditCard } from 'lucide-react';
 
@@ -24,16 +24,16 @@ export default function FounderDashboard() {
       const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
       const email = userInfo.email;
 
-      const startupsRes = await axios.get(`http://localhost:5000/api/startups/founder/${email}`, { withCredentials: true });
+      const startupsRes = await API.get(`/api/startups/founder/${email}`);
       setStartups(startupsRes.data);
       if (startupsRes.data.length > 0) {
         setSelectedStartupId(startupsRes.data[0]._id);
       }
 
-      const oppsRes = await axios.get(`http://localhost:5000/api/opportunities`, { withCredentials: true });
+      const oppsRes = await API.get('/api/opportunities');
       setOpportunities(oppsRes.data.opportunities || []);
 
-      const appsRes = await axios.get(`http://localhost:5000/api/applications`, { withCredentials: true });
+      const appsRes = await API.get('/api/applications');
       setApplicants(appsRes.data || []);
     } catch (err) {
       toast.error('Failed to load dashboard data');
@@ -50,11 +50,11 @@ export default function FounderDashboard() {
       const recordPayment = async () => {
         try {
           const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
-          await axios.post('http://localhost:5000/api/save-payment', {
+          await API.post('/api/save-payment', {
             user_email: userInfo.email,
             amount: 49,
             transaction_id: sessionId
-          }, { withCredentials: true });
+          });
           
           toast.success('Payment recorded successfully!');
           window.history.replaceState({}, document.title, window.location.pathname);
@@ -70,9 +70,9 @@ export default function FounderDashboard() {
 
   const handleStatusUpdate = async (appId, newStatus) => {
     try {
-      await axios.patch(`http://localhost:5000/api/applications/${appId}/status`, {
+      await API.patch(`/api/applications/${appId}/status`, {
         status: newStatus
-      }, { withCredentials: true });
+      });
       toast.success(`Application status updated to ${newStatus}`);
       fetchData();
     } catch (err) {
@@ -85,14 +85,14 @@ export default function FounderDashboard() {
     try {
       const skillsArray = requiredSkills.split(',').map(s => s.trim()).filter(Boolean);
       
-      await axios.post('http://localhost:5000/api/opportunities', {
+      await API.post('/api/opportunities', {
         startup_id: selectedStartupId,
         role_title: roleTitle,
         work_type: workType,
         commitment_level: commitmentLevel,
         required_skills: skillsArray,
         deadline
-      }, { withCredentials: true });
+      });
 
       toast.success('Opportunity posted successfully!');
       setShowPostModal(false);
@@ -114,9 +114,9 @@ export default function FounderDashboard() {
   const handleStripePayment = async () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
-      const res = await axios.post('http://localhost:5000/api/create-checkout-session', {
+      const res = await API.post('/api/create-checkout-session', {
         email: userInfo.email
-      }, { withCredentials: true });
+      });
 
       if (res.data.url) {
         window.location.href = res.data.url;
@@ -192,7 +192,7 @@ export default function FounderDashboard() {
                           <img src={s.logo || 'https://via.placeholder.com/150'} alt="" className="w-12 h-12 rounded-lg object-cover bg-zinc-700" />
                           <div>
                             <h4 className="font-bold text-white">{s.startup_name}</h4>
-                            <p className="text-xs text-zinc-400">{s.industry} - {s.funding_stage}</p>
+                            <p className="text-xs text-zinc-400">{s.industry} | {s.funding_stage}</p>
                           </div>
                         </div>
                       ))}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../api';
 import { Building, Globe, ExternalLink, Rocket } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -9,7 +9,7 @@ export default function BrowseStartups() {
 
   useEffect(() => {
     setLoading(true);
-    axios.get('http://localhost:5000/api/startups')
+    API.get('/api/startups')
       .then(res => setStartups(res.data))
       .catch(() => toast.error('Failed to load startups'))
       .finally(() => setLoading(false));

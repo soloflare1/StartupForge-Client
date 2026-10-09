@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../api';
 import { Search, Briefcase, Building, Calendar, ChevronLeft, ChevronRight, Send, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -20,7 +20,7 @@ export default function BrowseOpportunities() {
   const fetchOpportunities = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/opportunities`, {
+      const res = await API.get('/api/opportunities', {
         params: { page, limit: 6, search, work_type: workType }
       });
       setOpportunities(res.data.opportunities);
@@ -48,12 +48,12 @@ export default function BrowseOpportunities() {
         return;
       }
 
-      await axios.post('http://localhost:5000/api/applications', {
+      await API.post('/api/applications', {
         opportunity_id: selectedOpp._id,
         applicant_email,
         portfolio_link: portfolioLink,
         motivation
-      }, { withCredentials: true });
+      });
 
       toast.success('Application submitted successfully!');
       setSelectedOpp(null);

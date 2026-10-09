@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../api';
 import toast from 'react-hot-toast';
 import { Briefcase, Bookmark, UserCheck, FileText, User } from 'lucide-react';
 
@@ -21,7 +21,7 @@ export default function CollaboratorDashboard() {
       setSkills(Array.isArray(userInfo.skills) ? userInfo.skills.join(', ') : (userInfo.skills || ''));
       setBio(userInfo.bio || '');
 
-      const res = await axios.get(`http://localhost:5000/api/applications/collaborator/${userInfo.email}`, { withCredentials: true });
+      const res = await API.get(`/api/applications/collaborator/${userInfo.email}`);
       setApplications(res.data || []);
     } catch (err) {
       console.error('Failed to fetch applications');
@@ -40,12 +40,12 @@ export default function CollaboratorDashboard() {
       const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
       const skillsArray = skills.split(',').map(s => s.trim()).filter(Boolean);
 
-      const res = await axios.put(`http://localhost:5000/api/auth/users/${userInfo.email}`, {
+      const res = await API.put(`/api/auth/users/${userInfo.email}`, {
         name,
         image,
         skills: skillsArray,
         bio
-      }, { withCredentials: true });
+      });
 
       localStorage.setItem('user', JSON.stringify(res.data));
       toast.success('Profile updated successfully!');

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import API from '../api';
 import toast from 'react-hot-toast';
 import { Users, FileText, DollarSign, ShieldAlert, Trash2, CheckCircle } from 'lucide-react';
 
@@ -18,16 +18,16 @@ export default function AdminDashboard() {
   const fetchAdminData = async () => {
     try {
       setLoading(true);
-      const statsRes = await axios.get('http://localhost:5000/api/admin/stats', { withCredentials: true });
+      const statsRes = await API.get('/api/admin/stats');
       setStats(statsRes.data);
 
-      const txRes = await axios.get('http://localhost:5000/api/admin/transactions', { withCredentials: true });
+      const txRes = await API.get('/api/admin/transactions');
       setTransactions(txRes.data);
 
-      const usersRes = await axios.get('http://localhost:5000/api/admin/users', { withCredentials: true });
+      const usersRes = await API.get('/api/admin/users');
       setUsers(usersRes.data);
 
-      const startupsRes = await axios.get('http://localhost:5000/api/startups', { withCredentials: true });
+      const startupsRes = await API.get('/api/startups');
       setStartups(startupsRes.data);
     } catch (error) {
       console.error('Failed to load admin metrics');
@@ -39,7 +39,7 @@ export default function AdminDashboard() {
   const handleDeleteUser = async (email) => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/admin/users/${email}`, { withCredentials: true });
+      await API.delete(`/api/admin/users/${email}`);
       setUsers(users.filter(u => u.email !== email));
       toast.success('User deleted successfully');
     } catch (err) {
@@ -50,7 +50,7 @@ export default function AdminDashboard() {
   const handleDeleteStartup = async (id) => {
     if (!window.confirm('Are you sure you want to delete this startup post?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/startups/${id}`, { withCredentials: true });
+      await API.delete(`/api/startups/${id}`);
       setStartups(startups.filter(s => s._id !== id));
       toast.success('Startup post deleted successfully');
     } catch (err) {
