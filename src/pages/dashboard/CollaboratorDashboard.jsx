@@ -122,12 +122,19 @@ export default function CollaboratorDashboard() {
         {activeTab === 'profile' && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-zinc-900/60 backdrop-blur-xl border border-zinc-800/80 rounded-2xl p-6 shadow-2xl md:col-span-1 text-center flex flex-col items-center">
-              <img 
-                src={image || 'https://via.placeholder.com/150'} 
-                alt="Profile" 
-                className="w-24 h-24 rounded-full object-cover border-2 border-blue-500 mb-4 bg-zinc-800" 
-              />
-              <h3 className="text-xl font-bold text-white">{name}</h3>
+              {image ? (
+                <img 
+                  src={image} 
+                  alt="Profile" 
+                  className="w-24 h-24 rounded-full object-cover border-2 border-blue-500 mb-4 bg-zinc-800"
+                  onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/150'; }}
+                />
+              ) : (
+                <div className="w-24 h-24 rounded-full border-2 border-blue-500 mb-4 bg-zinc-800 flex items-center justify-center text-zinc-400 text-xl font-bold">
+                  {name ? name.charAt(0).toUpperCase() : 'U'}
+                </div>
+              )}
+              <h3 className="text-xl font-bold text-white">{name || 'User'}</h3>
               <p className="text-xs text-zinc-400 mt-1">{JSON.parse(localStorage.getItem('user') || '{}').email}</p>
               <p className="text-xs text-blue-400 mt-2 font-medium bg-blue-950/80 border border-blue-800 px-3 py-1 rounded-full">Collaborator</p>
               <p className="text-xs text-zinc-300 mt-4 text-left w-full"><strong className="text-white">Bio:</strong> {bio || 'No bio added yet.'}</p>
@@ -148,11 +155,12 @@ export default function CollaboratorDashboard() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-zinc-300 mb-1">Image URL</label>
+                  <label className="block text-sm font-medium text-zinc-300 mb-1">Image URL (Direct image link)</label>
                   <input 
                     type="text"
                     value={image}
                     onChange={(e) => setImage(e.target.value)}
+                    placeholder="https://example.com/image.jpg"
                     className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-sm text-white outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
