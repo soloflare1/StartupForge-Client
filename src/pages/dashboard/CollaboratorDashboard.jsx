@@ -10,7 +10,7 @@ export default function CollaboratorDashboard() {
     const fetchCollaboratorData = async () => {
       try {
         const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
-        const res = await axios.get(`http://localhost:5000/api/applications?email=${userInfo.email}`, { withCredentials: true });
+        const res = await axios.get(`http://localhost:5000/api/applications/collaborator/${userInfo.email}`, { withCredentials: true });
         setApplications(res.data || []);
       } catch (err) {
         console.error('Failed to fetch applications');
@@ -57,7 +57,7 @@ export default function CollaboratorDashboard() {
               {applications.map(app => (
                 <div key={app._id} className="bg-zinc-800/50 border border-zinc-700/60 p-4 rounded-xl flex justify-between items-center">
                   <div>
-                    <h4 className="font-bold text-white">{app.role_title || 'Opportunity Application'}</h4>
+                    <h4 className="font-bold text-white">{app.opportunity_id?.role_title || 'Opportunity Application'}</h4>
                     <p className="text-xs text-zinc-400 mt-1">Status: {app.status}</p>
                   </div>
                   <span className="text-xs px-3 py-1 bg-blue-950 text-blue-400 border border-blue-800 rounded-full">{app.status}</span>
