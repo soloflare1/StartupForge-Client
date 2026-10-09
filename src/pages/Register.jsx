@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, User, Image as ImageIcon, UserPlus, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
-import axios from 'axios';
+import API from '../api';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -21,7 +21,7 @@ export default function Register() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      const response = await API.post('/api/auth/register', {
         name,
         email,
         password,
